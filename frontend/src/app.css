@@ -1,0 +1,96 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(90deg, #2f2744, #634783);
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+
+.container {
+    text-align: center;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 40px; /* Adjust size to match the design */
+    height: auto;
+    margin-right: 10px;
+    padding-bottom: 5px;
+}
+
+.header-text {
+    font-size: 40px;
+    font-weight: 400;
+    color: white;
+}
+
+h1 {
+    font-size: 70px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 100px;
+    margin-top: 10px;
+}
+
+.highlight {
+    color: #f34674;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 25px;
+    padding: 5px 10px;
+    width: 600px;
+    margin: 0 auto;
+}
+
+input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+    border-radius: 25px;
+}
+
+button {
+    background: #f34674;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #d93a65;
+}
+
+.prediction {
+    margin-top: 20px;
+    font-size: 18px;
+    color: white;
+}
+
+.prediction strong{
+    color: #f34674;
+}
+
+.error {
+    margin-top: 20px;
+    color: #f34674;
+}
