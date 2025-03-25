@@ -18,11 +18,14 @@ function App() {
       setError("");
       setPrediction("");
       setLoading(true);
-      const response = await fetch("http://127.0.0.1:8001/predict", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
-      });
+      const response = await fetch(
+        "https://lc-security-backend-d51e9de3f86b.herokuapp.com/predict",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
