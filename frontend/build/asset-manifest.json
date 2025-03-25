@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.f22d5a79.css",
-    "main.js": "/static/js/main.315766e1.js",
+    "main.js": "/static/js/main.fd13f18d.js",
     "static/media/lc_security_logo.png": "/static/media/lc_security_logo.a9a7ab4ac5123ca15c4a.png",
     "index.html": "/index.html",
     "main.f22d5a79.css.map": "/static/css/main.f22d5a79.css.map",
-    "main.315766e1.js.map": "/static/js/main.315766e1.js.map"
+    "main.fd13f18d.js.map": "/static/js/main.fd13f18d.js.map"
   },
   "entrypoints": [
     "static/css/main.f22d5a79.css",
-    "static/js/main.315766e1.js"
+    "static/js/main.fd13f18d.js"
   ]
 }
