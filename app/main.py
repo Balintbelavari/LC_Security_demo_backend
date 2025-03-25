@@ -35,7 +35,10 @@ app.add_middleware(
 )
 
 # ✅ Serve React frontend
-frontend_build_path = Path(__file__).parent.parent / "frontend" / "build"
+frontend_build_path = Path(__file__) .parent .parent / "frontend" / "build"
+print()
+print(frontend_build_path)
+print()
 
 if frontend_build_path.exists():
     app.mount("/static", StaticFiles(directory=frontend_build_path / "static"), name="static")
