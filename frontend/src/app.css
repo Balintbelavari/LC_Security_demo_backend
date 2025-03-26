@@ -10,8 +10,13 @@ body {
     color: white;
 }
 
+#root {
+    width: 100%;
+}
+
 .container {
     text-align: center;
+    margin: auto;
 }
 
 .header {
@@ -22,24 +27,26 @@ body {
 }
 
 .logo {
-    width: 40px; /* Adjust size to match the design */
+    width: 40px;
     height: auto;
     margin-right: 10px;
     padding-bottom: 5px;
 }
 
 .header-text {
-    font-size: 40px;
+    font-size: 32px;
     font-weight: 400;
     color: white;
 }
 
 h1 {
-    font-size: 70px;
+    font-size: 50px;
     font-weight: 700;
     color: white;
     margin-bottom: 100px;
     margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .highlight {
@@ -48,32 +55,46 @@ h1 {
 
 .input-container {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns button to the left */
     background: white;
-    border-radius: 25px;
-    padding: 5px 10px;
-    width: 600px;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100%;
+    max-width: 600px;
     margin: 0 auto;
 }
 
-input {
-    flex: 1;
+/* Responsive adjustments */
+@media (max-width: 750px) { /* Phones */
+    .input-container {
+        max-width: 80%;
+    }
+}
+
+textarea {
+    width: 100%;
+    min-height: 20px;
+    max-height: 160px; /* 8 lines max */
+    overflow-y: auto;
     border: none;
     outline: none;
-    padding: 10px;
     font-size: 16px;
     color: #333;
-    border-radius: 25px;
+    resize: none;
+    border-radius: 8px;
+    padding-bottom: 10px;
 }
 
 button {
     background: #f34674;
     color: white;
     border: none;
-    border-radius: 25px;
-    padding: 10px 20px;
-    font-size: 16px;
+    border-radius: 10px;
+    padding: 8px 15px;
+    font-size: 14px;
     cursor: pointer;
+    align-self: flex-start; /* Aligns button to the left */
 }
 
 button:hover {
@@ -86,7 +107,7 @@ button:hover {
     color: white;
 }
 
-.prediction strong{
+.prediction strong {
     color: #f34674;
 }
 

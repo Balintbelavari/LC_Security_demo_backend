@@ -45,12 +45,6 @@ function App() {
     }
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handlePredict();
-    }
-  };
-
   return (
     <div className="container">
       <div className="header">
@@ -61,12 +55,30 @@ function App() {
         Is it a <span className="highlight">scam</span>?
       </h1>
       <div className="input-container">
-        <input
-          type="text"
+        <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={handleKeyPress} // Add Enter key handler
           placeholder="Type something here..."
+          rows="1" // Default to 1 row
+          style={{
+            height: "32px", // Default height
+            minHeight: "20px", // Ensures single-row height
+            maxHeight: "160px",
+            overflowY: "auto",
+          }}
+          onInput={(e) => {
+            e.target.style.height = "20px"; // Reset before recalculating
+            if (e.target.scrollHeight > 20) {
+              e.target.style.height =
+                Math.min(e.target.scrollHeight, 160) + "px";
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handlePredict();
+            }
+          }}
         />
         <button onClick={handlePredict} disabled={loading}>
           Check
