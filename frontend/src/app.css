@@ -70,10 +70,13 @@ h1 {
     .input-container {
         max-width: 80%;
     }
+    textarea {
+        max-width: 70%;
+    }
 }
 
 textarea {
-    width: 100%;
+    width: 90%;
     min-height: 20px;
     max-height: 160px; /* 8 lines max */
     overflow-y: auto;
