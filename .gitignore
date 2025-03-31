@@ -1,13 +1,14 @@
 # Ignore node_modules directory
 frontend/node_modules/
-backend/node_modules/
-backend/app/node_modules/
+node_modules/
+app/node_modules/
 
 # Ignore log files
 *.log
 
 # Ignore environment variable files
-backend/app/.env
+app/.env
+app/.env.save
 
 # Ignore build directories
 dist/
@@ -32,7 +33,3 @@ backend/app/__pycache__
 
 # Ignore large file
 app/bert_large_spam_model/model.safetensors
-
-# Ignore MongoDB data files
-app/.env
-app/.env.save
