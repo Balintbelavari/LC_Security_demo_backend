@@ -32,3 +32,4 @@ backend/app/__pycache__
 
 # Ignore github
 .github/app/bert_large_spam_model/model.safetensors
+app/bert_large_spam_model/model.safetensors
