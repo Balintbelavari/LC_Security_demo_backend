@@ -32,4 +32,4 @@ backend/__pycache__/
 backend/app/__pycache__
 
 # Ignore large file
-bert_large_spam_model/model.safetensors
+app/bert_large_spam_model/model.safetensors
