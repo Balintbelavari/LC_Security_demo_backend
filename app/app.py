@@ -5,14 +5,25 @@ from flask_cors import CORS
 from transformers import BertTokenizer, BertForSequenceClassification
 from pymongo import MongoClient
 from datetime import datetime
-from google_drive_downloader import GoogleDriveDownloader as gdd
+
+# GitHub model download function
+def download_file_from_github(github_url, save_path):
+    response = requests.get(github_url)
+    if response.status_code == 200:
+        with open(save_path, 'wb') as file:
+            file.write(response.content)
+        print(f"File successfully downloaded to {save_path}")
+    else:
+        print(f"Failed to download the file. Status code: {response.status_code}")
+        
+github_url = "https://github.com/Balintbelavari/LC_Security_demo_backend/blob/facd8c9a26384ef2edae63d1bf7d19be4466e2e2/app/bert_large_spam_model/model.safetensors"
+save_path = "bert_large_spam_model/model.safetensors"
+
+download_file_from_github(github_url, save_path)
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)  # Enable CORS for React frontend
-
-FILE_ID = "https://drive.google.com/file/d/1otmqu9wV5Mb8U-BTnMTKLa91hCQcotyR/view?usp=share_link"  # Google Drive file ID
-DESTINATION_PATH = "app/bert_large_spam_model/model.safetensors"
 
 # Load environment variables (if using .env file)
 from dotenv import load_dotenv
@@ -35,15 +46,6 @@ def predict(text):
         outputs = model(**inputs)
     prediction = torch.argmax(outputs.logits, dim=1).item()
     return "Spam" if prediction == 1 else "Ham"
-
-# Google Drive model download function
-def download_model_from_google_drive():
-    try:
-        print("Starting download of the model file from Google Drive...")
-        gdd.download_file_from_google_drive(file_id=FILE_ID, dest_path=DESTINATION_PATH)
-        print(f"Model file downloaded successfully to {DESTINATION_PATH}")
-    except Exception as e:
-        print(f"Error downloading the model: {e}")
 
 # Flask route to handle model download on startup
 @app.before_first_request
