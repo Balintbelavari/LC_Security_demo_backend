@@ -11,7 +11,7 @@ from google_drive_downloader import GoogleDriveDownloader as gdd
 app = Flask(__name__)
 CORS(app)  # Enable CORS for React frontend
 
-FILE_ID = "hidden for chatgpt"  # Google Drive file ID
+FILE_ID = "https://drive.google.com/file/d/1otmqu9wV5Mb8U-BTnMTKLa91hCQcotyR/view?usp=share_link"  # Google Drive file ID
 DESTINATION_PATH = "app/bert_large_spam_model/model.safetensors"
 
 # Load environment variables (if using .env file)
