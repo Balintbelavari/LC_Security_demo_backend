@@ -5,22 +5,26 @@ from flask_cors import CORS
 from transformers import BertTokenizer, BertForSequenceClassification
 from pymongo import MongoClient
 from datetime import datetime
+from google_drive_downloader import GoogleDriveDownloader as gdd
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)  # Enable CORS for React frontend
 
+FILE_ID = "hidden for chatgpt"  # Google Drive file ID
+DESTINATION_PATH = "app/bert_large_spam_model/model.safetensors"
+
 # Load environment variables (if using .env file)
 from dotenv import load_dotenv
 load_dotenv()
 
-# Connect to MongoDB
+# MongoDB connection setup
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 client = MongoClient(MONGO_URI)
 db = client["bert_large_spam_model"]  # Replace with your actual database name
 collection = db["predictions"]  # Collection to store results
 
-# Load Model & Tokenizer
+# Load the model & tokenizer
 model = BertForSequenceClassification.from_pretrained("bert_large_spam_model")
 tokenizer = BertTokenizer.from_pretrained("bert_large_spam_model")
 
@@ -31,6 +35,20 @@ def predict(text):
         outputs = model(**inputs)
     prediction = torch.argmax(outputs.logits, dim=1).item()
     return "Spam" if prediction == 1 else "Ham"
+
+# Google Drive model download function
+def download_model_from_google_drive():
+    try:
+        print("Starting download of the model file from Google Drive...")
+        gdd.download_file_from_google_drive(file_id=FILE_ID, dest_path=DESTINATION_PATH)
+        print(f"Model file downloaded successfully to {DESTINATION_PATH}")
+    except Exception as e:
+        print(f"Error downloading the model: {e}")
+
+# Flask route to handle model download on startup
+@app.before_first_request
+def before_first_request():
+    download_model_from_google_drive()
 
 # API root
 @app.route("/", methods=["GET"])
