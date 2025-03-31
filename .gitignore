@@ -32,3 +32,7 @@ backend/app/__pycache__
 
 # Ignore large file
 app/bert_large_spam_model/model.safetensors
+
+# Ignore MongoDB data files
+app/.env
+app/.env.save
