@@ -28,7 +28,7 @@ app = FastAPI()
 # ✅ Enable CORS for React frontend (localhost:3000 for development)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://lc-security-backend-d51e9de3f86b.herokuapp.com/", "http://127.0.0.1:8001"],  # React dev server, heroku hosting, fastapi local
+    allow_origins=["http://localhost:3000", "https://lc-security-backend-d51e9de3f86b.herokuapp.com/", "http://127.0.0.1:8001/"],  # React dev server, heroku hosting, fastapi local
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
