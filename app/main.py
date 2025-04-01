@@ -1,20 +1,29 @@
-from fastapi import FastAPI, HTTPException  # type: ignore
-from fastapi.staticfiles import StaticFiles  # type: ignore
-from fastapi.responses import FileResponse  # type: ignore
-from pathlib import Path  # type: ignore
-from fastapi.middleware.cors import CORSMiddleware  # type: ignore
-from pydantic import BaseModel  # type: ignore
-from motor.motor_asyncio import AsyncIOMotorClient  # type: ignore
-import joblib  # type: ignore
-from datetime import datetime
-from dotenv import load_dotenv  # type: ignore
 import os
+from pathlib import Path
+from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from motor.motor_asyncio import AsyncIOMotorClient
+import joblib
+from datetime import datetime
+from dotenv import load_dotenv
+import logging
+
+# Setup logging
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 # Load environment variables
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
-MONGO_URI = os.getenv("MONGO_URI")  # MongoDB connection URI
+MONGO_URI = os.getenv("MONGO_URI")
+if not MONGO_URI:
+    raise ValueError("MongoDB URI not found in environment variables.")
+
+# MongoDB client setup
 client = AsyncIOMotorClient(MONGO_URI)
 db = client["your_database"]
 
@@ -22,24 +31,20 @@ db = client["your_database"]
 model = joblib.load(os.path.join(BASE_DIR, "model.pkl"))
 vectorizer = joblib.load(os.path.join(BASE_DIR, "vectorizer.pkl"))
 
-# FastAPI app
+# FastAPI app setup
 app = FastAPI()
 
 # ✅ Enable CORS for React frontend (localhost:3000 for development)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://lc-security-backend-d51e9de3f86b.herokuapp.com/", "http://127.0.0.1:8001/"],  # React dev server, heroku hosting
+    allow_origins=["http://localhost:3000", "https://lc-security-backend-d51e9de3f86b.herokuapp.com/", "http://127.0.0.1:8001/"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # ✅ Serve React frontend
-frontend_build_path = Path(__file__) .parent .parent / "frontend" / "build"
-print()
-print(frontend_build_path)
-print()
-
+frontend_build_path = Path(__file__).resolve().parent.parent / "frontend" / "build"
 if frontend_build_path.exists():
     app.mount("/static", StaticFiles(directory=frontend_build_path / "static"), name="static")
 
@@ -77,7 +82,8 @@ async def predict(message: Message):
 
         return {"prediction": prediction}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error occurred while predicting: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 # ✅ Properly Close MongoDB on Shutdown
 @app.on_event("shutdown")
@@ -86,5 +92,6 @@ async def shutdown():
 
 # ✅ Run FastAPI (for local development)
 if __name__ == "__main__":
-    import uvicorn  # type: ignore
-    uvicorn.run(app, host="127.0.0.1", port=8001, reload=True)
+    import uvicorn
+    reload = os.getenv("FASTAPI_RELOAD", "false").lower() == "true"
+    uvicorn.run(app, host="127.0.0.1", port=8001, reload=reload)
