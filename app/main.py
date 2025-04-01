@@ -16,7 +16,7 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 MONGO_URI = os.getenv("MONGO_URI")  # MongoDB connection URI
 client = AsyncIOMotorClient(MONGO_URI)
-db = client["your_database"]
+db = client["model_v0.1.1"]
 
 # Load model and vectorizer
 model = joblib.load(os.path.join(BASE_DIR, "model1.pkl"))
