@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "lcsecurity",
+  "private_key_id": "f65f63473db7b059284a79622b9ea9009711997f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC2pULH5IftFDVP\nQY5/ClgHibhegiuBJVbKHN/h/93x/bFxue3d0QfIkkYHAP3sF+MNMH8UL4Gh1q/F\n6B3Ofgl/NwC7EQdeZcC33aQWRa0eH4+QVrp4wkfmDmtgYL+Wu/SYsgsTrk1x3Z0L\nlQOE/xWc2rS6KY5PTI/dv+nC92HdombfqRQqkHwh8CPza3E9hVa6GObPXMnEnHt2\nMtwmEohsv/aIvqoFMUAidWTFsD+fGl+/ZiyW4ArAlHAXDtGpxiUt7sOd6Fag03SA\nm3SamEX2miCmoyjfj0umEPnAKcV0FzRzXLvrQPWa753i9dL1AXwOtCL+971ATH1q\ns1+DGONbAgMBAAECggEAEtYyb/kyx5Go+daSAqoncAeVGzIjmHsoW0nlESLZWgbH\nESqSzKitO9NSI5DHn1zLTuXshUFtBirlD+0jfdNj2Vnr2l8kOmkWGiBituVSuGOa\n49D+BExNK/3atyLjP4F89W6PU+VLGW44ryQcK9A/A2FO+FAm3CjSQZV0X2YyErBq\n9qjUQ5Y1yDiPlu9MP+E5w4SQ/KN8L68RY+bWGsxPhG5KnZsjtXeL0twvuILNbMKH\ne3hnhj7WZ8+miMI9TeJy0x3QoUzXaGRSt/qCMUFrxaoznltI5eUgdU2EE/oFhgct\nM4ftz7U/QzQvrNOBLckZvP/YHOv4xUiUQh5Z1snbMQKBgQD8Z1rxIfqNbJc+3Rha\npAulXM3ubPdsIOpZT/Xe4wEgy1HNTUtaSEcjjkz8rkxzmboPwakBWlNB8uK6GiAN\nSCtwRf7aZ0LnUeKX/riU0Tpu9AOvfhZQhOFLc9wSkKxOJfBQQ7dPR8MYe1frDxju\n+jU7a8Vsxvs++kTbnpOYVesVKQKBgQC5P3ZJppWAeX23isu262HE4Ua1hsbACIxo\nGz7rs542tJCM2TX6r0UKHjagMkL2Hf86hAyra5PXqfm8o3rAlspw0o0ahd0fa5W6\nmPGZ6lU0B2YaLN8jh7ZvANsftwEthaaZPeHmAVhBLFbvp7F8MKVpC7YyiOKPa+RZ\nd3zDiQAg4wKBgQCs74fQ5W4NDhUGvmfcWr+b+l0iekiALoFC1lVo9HImbQhMOSRi\n5FjRlMNM8YNyRSbFevP3+FJJQkh0KEhDsWoJz/uQ2uVtJp6xc5Y2aLC3qrsHt8VE\nP/c5QlXL5pIYLUhdRjhHuqyCjqgrZrm3q3ljkDDBmgg1GzaonxsTafLbGQKBgCjO\nFdw7WYsnN84KQL1WM/8OMGkj+vup5mO4PK/mrN8X/w9HeWBy4x5LcXTwHVfhW6sk\nEzZfR/2lb2FiEVQC4yze9D33ZrHZHO4xamag+4uuZYs2fyBwcHsbESl3QkcovX3b\n57qmaS5R+gRoR+w3OvhcoBGZnW5CMdaTP2RC9UhJAoGAM7+ZcIp5qTe1LfuGZRM+\n3HRyv2G/ZJAbcuAeZsgHW9WGYt8VKKn1m9cyJUAGonffLuKojFRPGG4sNeIySu9B\nEGvjdg5VEuejoS1pnwKTzxJxdMhJz8JiNgoKynIemNDvdT8KEnfGQhrB5kzhAcWA\nivH5GBogZ0RQwcJNM8mLW58=\n-----END PRIVATE KEY-----\n",
+  "client_email": "balint-belavari@lcsecurity.iam.gserviceaccount.com",
+  "client_id": "115136003413236106418",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/balint-belavari%40lcsecurity.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
