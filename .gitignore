@@ -38,3 +38,5 @@ backend/app/__pycache__
 **/encrypt.py
 
 **/venv/
+
+**/quantized_bert_spam
