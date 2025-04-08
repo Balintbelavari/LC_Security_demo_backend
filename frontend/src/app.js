@@ -118,9 +118,13 @@ function App() {
         <div className="example-buttons">
           <button
             className="example-button"
-            onClick={() => handlePredict("Do you want to have lunch tomorrow?")}
+            onClick={() =>
+              handlePredict(
+                "Congratulations on Your Admission to the University of Debrecen!"
+              )
+            }
           >
-            Do you want to have lunch tomorrow?
+            Congratulations on Your Admission to the University of Debrecen!
           </button>
           <button
             className="example-button"

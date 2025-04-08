@@ -16,7 +16,7 @@ import base64
 import json
 from cryptography.fernet import Fernet  # type: ignore
 import torch # type: ignore
-from transformers import BertTokenizer, BertForSequenceClassification
+from transformers import AutoTokenizer,BertTokenizer, BertForSequenceClassification, AutoModelForSequenceClassification # type: ignore
 
 # Load environment variables
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -47,9 +47,14 @@ model_traditional = joblib.load(os.path.join(BASE_DIR, "model1.pkl"))
 vectorizer_traditional = joblib.load(os.path.join(BASE_DIR, "vectorizer1.pkl"))
 
 # Load BERT-based model
-model_path = os.path.join(BASE_DIR, "quantized_bert_spam")
-tokenizer = BertTokenizer.from_pretrained(model_path)
-model_bert = BertForSequenceClassification.from_pretrained(model_path)
+# model_path = os.path.join(BASE_DIR, "quantized_bert_spam")
+# tokenizer = BertTokenizer.from_pretrained(model_path)
+# model_bert = BertForSequenceClassification.from_pretrained(model_path)
+
+model_name = "Anurag3703/bert-spam-classifier"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model_bert = AutoModelForSequenceClassification.from_pretrained(model_name)
+
 model_bert.eval()
 
 # FastAPI app
