@@ -36,3 +36,5 @@ backend/app/__pycache__
 
 # Ignore encryption key
 **/encrypt.py
+
+**/venv/

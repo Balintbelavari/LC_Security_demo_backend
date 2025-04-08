@@ -7,6 +7,7 @@ function App() {
   const [prediction, setPrediction] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [useBert, setUseBert] = useState(false); // State to track model selection
 
   const handlePredict = async (inputMessage) => {
     const text = inputMessage || message; // Use the provided example or typed input
@@ -21,14 +22,16 @@ function App() {
       setPrediction("");
       setLoading(true);
       setMessage(text); // Set message state for example buttons
-      const response = await fetch(
-        "https://lc-security-backend-d51e9de3f86b.herokuapp.com/predict",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text }),
-        }
-      );
+
+      // Make the fetch request with both the message and use_bert
+      const response = await fetch("http://127.0.0.1:8001/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: text,
+          use_bert: useBert, // Include use_bert in the request body
+        }),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -87,6 +90,20 @@ function App() {
           Check
         </button>
       </div>
+
+      {/* Model Selection */}
+      <div className="model-selection">
+        <label htmlFor="model-select">Select Model:</label>
+        <select
+          id="model-select"
+          value={useBert ? "bert" : "traditional"}
+          onChange={(e) => setUseBert(e.target.value === "bert")}
+        >
+          <option value="traditional">Naive-Bayes Model</option>
+          <option value="bert">BERT Model</option>
+        </select>
+      </div>
+
       {loading && <p>Loading...</p>}
       {prediction && (
         <p className="prediction">
@@ -116,7 +133,7 @@ function App() {
 
       {/* Version Section */}
       <div className="version-container">
-        <p className="version-label">Model Version: 0.1.1</p>
+        <p className="version-label">Newest Model Version: 0.2.2</p>
       </div>
     </div>
   );
