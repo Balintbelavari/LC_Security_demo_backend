@@ -24,14 +24,17 @@ function App() {
       setMessage(text); // Set message state for example buttons
 
       // Make the fetch request with both the message and use_bert
-      const response = await fetch("http://127.0.0.1:8001/predict", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: text,
-          use_bert: useBert, // Include use_bert in the request body
-        }),
-      });
+      const response = await fetch(
+        "https://lc-security-backend-d51e9de3f86b.herokuapp.com/predict",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: text,
+            use_bert: useBert, // Include use_bert in the request body
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
