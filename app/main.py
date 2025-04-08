@@ -15,6 +15,8 @@ from google.oauth2 import service_account # type: ignore
 import base64
 import json
 from cryptography.fernet import Fernet  # type: ignore
+import torch # type: ignore
+from transformers import BertTokenizer, BertForSequenceClassification
 
 # Load environment variables
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -41,8 +43,14 @@ client_gs = gspread.authorize(credentials)
 sheet = client_gs.open("mongodb_export").sheet1
 
 # Load model and vectorizer
-model = joblib.load(os.path.join(BASE_DIR, "model1.pkl"))
-vectorizer = joblib.load(os.path.join(BASE_DIR, "vectorizer1.pkl"))
+model_traditional = joblib.load(os.path.join(BASE_DIR, "model1.pkl"))
+vectorizer_traditional = joblib.load(os.path.join(BASE_DIR, "vectorizer1.pkl"))
+
+# Load BERT-based model
+model_path = os.path.join(BASE_DIR, "quantized_bert_spam")
+tokenizer = BertTokenizer.from_pretrained(model_path)
+model_bert = BertForSequenceClassification.from_pretrained(model_path)
+model_bert.eval()
 
 # FastAPI app
 app = FastAPI()
@@ -50,20 +58,14 @@ app = FastAPI()
 # ✅ Enable CORS for React frontend (localhost:3000 for development)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://lc-security-backend-d51e9de3f86b.herokuapp.com/", "http://127.0.0.1:8001/"],  # React dev server, heroku hosting
+    allow_origins=["http://localhost:3000", "https://lc-security-backend-d51e9de3f86b.herokuapp.com/", "http://127.0.0.1:8001s"],  # React dev server, heroku hosting, local testing
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # ✅ Serve React frontend
-frontend_build_path = Path(__file__) .parent .parent / "frontend" / "build"
-print()
-print(frontend_build_path)
-print()
-
-if frontend_build_path.exists():
-    app.mount("/static", StaticFiles(directory=frontend_build_path / "static"), name="static")
+frontend_build_path = Path(os.getenv("FRONTEND_BUILD_PATH"))
 
 @app.get("/")
 async def serve_frontend():
@@ -73,39 +75,51 @@ async def serve_frontend():
         return FileResponse(index_path)
     return {"error": "Frontend build not found. Run npm run build in the frontend folder."}
 
-# ✅ API Root
-@app.get("/api")
-def read_root():
-    return {"message": "Welcome to the Scam/Ham Prediction API"}
-
 # ✅ Predict Endpoint
 class Message(BaseModel):
     message: str
+    use_bert: bool
 
 @app.post("/predict")
 async def predict(message: Message):
     try:
-        # Transform input and make prediction
-        message_bow = vectorizer.transform([message.message])
-        prediction = model.predict(message_bow)[0]
+        if message.use_bert:
+            # Use BERT-based model for prediction
+            inputs = tokenizer(
+                message.message,
+                return_tensors="pt",
+                truncation=True,
+                max_length=512,
+            )
+            with torch.no_grad():
+                output = model_bert(**inputs)
+            prediction_num = torch.argmax(output.logits).item()
+            prediction_text = "Spam" if prediction_num == 1 else "Ham"
+        else:
+            # Use traditional model for prediction
+            message_bow = vectorizer_traditional.transform([message.message])
+            prediction_text = model_traditional.predict(message_bow)[0]
 
         # Store prediction in MongoDB
         result = {
             "message": message.message,
-            "prediction": prediction,
+            "prediction": prediction_text,
             "timestamp": datetime.now().isoformat()
         }
         await db.predictions.insert_one(result)
-        
+
         # Update Google Sheet
-        data = await collection.find({}, {"_id": 0, "message": 1, "prediction": 1}).to_list(length=None)
-        formatted_data = [["Message", "Prediction"]]  # Header row
-        new_row = [message.message, prediction]
+        new_row = [message.message, prediction_text]
         sheet.append_row(new_row)
 
-        return {"prediction": prediction}
+        return {"prediction": prediction_text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+if frontend_build_path.exists():
+    app.mount("/", StaticFiles(directory=frontend_build_path, html=True), name="root_files")
+    app.mount("/static", StaticFiles(directory=frontend_build_path / "static"), name="static")
+
 
 # ✅ Properly Close MongoDB on Shutdown
 @app.on_event("shutdown")

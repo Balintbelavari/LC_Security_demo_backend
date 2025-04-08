@@ -19,6 +19,7 @@ body {
     text-align: center;
     margin: auto;
     flex: 1;
+    z-index: 1;
 }
 
 .header {
@@ -190,3 +191,34 @@ button:hover {
     color: white;
     text-align: center;
 }
+
+.model-selection {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .model-selection label {
+    font-size: 16px;
+    margin-right: 10px;
+    color: white;
+  }
+  
+  .model-selection select {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+/* Particles Background */
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  canvas {
+    display: block;
+    vertical-align: bottom;
+  }
