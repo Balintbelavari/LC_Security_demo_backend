@@ -40,3 +40,5 @@ backend/app/__pycache__
 **/venv/
 
 **/quantized_bert_spam
+
+**/node-v18.20.8-darwin-arm64.tar.xz

@@ -7,7 +7,7 @@ function App() {
   const [prediction, setPrediction] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [useBert, setUseBert] = useState(false); // State to track model selection
+  const [useBert, setUseBert] = useState(true); // State to track model selection
 
   const handlePredict = async (inputMessage) => {
     const text = inputMessage || message; // Use the provided example or typed input
@@ -63,6 +63,7 @@ function App() {
       <h1>
         Is it a <span className="highlight">scam</span>?
       </h1>
+
       <div className="input-container">
         <textarea
           value={message}
@@ -89,28 +90,38 @@ function App() {
             }
           }}
         />
-        <button onClick={() => handlePredict()} disabled={loading}>
-          Check
-        </button>
-      </div>
 
-      {/* Model Selection */}
-      <div className="model-selection">
-        <label htmlFor="model-select">Select Model:</label>
-        <select
-          id="model-select"
-          value={useBert ? "bert" : "traditional"}
-          onChange={(e) => setUseBert(e.target.value === "bert")}
-        >
-          <option value="traditional">Naive-Bayes Model</option>
-          <option value="bert">BERT Model</option>
-        </select>
+        <div className="model-selection">
+          <button onClick={() => handlePredict()} disabled={loading}>
+            Check
+          </button>
+          <select
+            id="model-select"
+            value={useBert ? "bert" : "traditional"}
+            onChange={(e) => setUseBert(e.target.value === "bert")}
+          >
+            <option value="bert">BERT Model (new)</option>
+            <option value="traditional">Naive-Bayes Model (old)</option>
+          </select>
+        </div>
       </div>
 
       {loading && <p>Loading...</p>}
       {prediction && (
-        <p className="prediction">
-          Prediction: <strong>{prediction}</strong>
+        <p
+          className={`prediction ${
+            prediction === "ham" ? "text-green-600" : "text-red-600"
+          }`}
+        >
+          {prediction === "ham" ? (
+            <>
+              Prediction: <strong>Safe ✅</strong>
+            </>
+          ) : (
+            <>
+              Prediction: <strong>Harmful 🚨</strong>
+            </>
+          )}
         </p>
       )}
       {error && <p className="error">{error}</p>}
@@ -131,9 +142,14 @@ function App() {
           </button>
           <button
             className="example-button"
-            onClick={() => handlePredict("Your membership expires in 10 days.")}
+            onClick={() =>
+              handlePredict(
+                "You won! As a valued Vodafone customer, our computer has picked you to win $150. To collect, it's easy, just call +09061743386"
+              )
+            }
           >
-            Your membership expires in 10 days.
+            You won! As a valued Vodafone customer, our computer has picked you
+            to win $150. To collect, it's easy, just call +09061743386
           </button>
         </div>
       </div>

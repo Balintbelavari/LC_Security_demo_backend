@@ -4,7 +4,6 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     background: linear-gradient(90deg, #2f2744, #634783);
     font-family: 'Roboto', sans-serif;
@@ -27,6 +26,7 @@ body {
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
+    margin-top: 100px;
 }
 
 .logo {
@@ -60,7 +60,6 @@ h1 {
 .input-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Aligns button to the left */
     background: white;
     border-radius: 15px;
     padding: 10px;
@@ -74,13 +73,10 @@ h1 {
     .input-container {
         width: 90%;
     }
-    textarea {
-        max-width: 80%;
-    }
 }
 
 textarea {
-    width: 90%;
+    width: 99%;
     min-height: 20px;
     max-height: 160px; /* 8 lines max */
     overflow-y: auto;
@@ -93,6 +89,24 @@ textarea {
     padding-bottom: 10px;
 }
 
+.model-selection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    margin-top: 10px;
+}
+
+.model-selection select {
+    font-size: 14px;
+    border: 0;
+    color: #f34674;
+    width: 30%;
+    text-align: end;
+    font-weight: bold;
+    align-self:flex-end;
+  }
+
 button {
     background: #f34674;
     color: white;
@@ -101,7 +115,6 @@ button {
     padding: 8px 15px;
     font-size: 14px;
     cursor: pointer;
-    align-self: flex-start; /* Aligns button to the left */
 }
 
 button:hover {
@@ -111,11 +124,12 @@ button:hover {
 .prediction {
     margin-top: 20px;
     font-size: 18px;
-    color: white;
+    color: #f34674;
+    font-weight: bold;
 }
 
 .prediction strong {
-    color: #f34674;
+    color: white;
 }
 
 .error {
@@ -191,24 +205,6 @@ button:hover {
     color: white;
     text-align: center;
 }
-
-.model-selection {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .model-selection label {
-    font-size: 16px;
-    margin-right: 10px;
-    color: white;
-  }
-  
-  .model-selection select {
-    padding: 5px 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
 
 /* Particles Background */
 #particles-js {

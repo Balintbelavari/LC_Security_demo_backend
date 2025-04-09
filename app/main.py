@@ -16,7 +16,7 @@ import base64
 import json
 from cryptography.fernet import Fernet  # type: ignore
 import torch # type: ignore
-from transformers import AutoTokenizer,BertTokenizer, BertForSequenceClassification, AutoModelForSequenceClassification # type: ignore
+from transformers import AutoTokenizer, AutoModelForSequenceClassification # type: ignore
 
 # Load environment variables
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -46,11 +46,7 @@ sheet = client_gs.open("mongodb_export").sheet1
 model_traditional = joblib.load(os.path.join(BASE_DIR, "model1.pkl"))
 vectorizer_traditional = joblib.load(os.path.join(BASE_DIR, "vectorizer1.pkl"))
 
-# Load BERT-based model
-# model_path = os.path.join(BASE_DIR, "quantized_bert_spam")
-# tokenizer = BertTokenizer.from_pretrained(model_path)
-# model_bert = BertForSequenceClassification.from_pretrained(model_path)
-
+# Load BERT-based model from Hugging Face
 model_name = "Anurag3703/bert-spam-classifier"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model_bert = AutoModelForSequenceClassification.from_pretrained(model_name)
@@ -63,7 +59,7 @@ app = FastAPI()
 # ✅ Enable CORS for React frontend (localhost:3000 for development)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://lc-security-backend-d51e9de3f86b.herokuapp.com/", "http://127.0.0.1:8001s"],  # React dev server, heroku hosting, local testing
+    allow_origins=["http://localhost:3000", "https://lc-security-backend-d51e9de3f86b.herokuapp.com/", "http://127.0.0.1:8001"],  # React dev server, heroku hosting, local testing
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -99,7 +95,7 @@ async def predict(message: Message):
             with torch.no_grad():
                 output = model_bert(**inputs)
             prediction_num = torch.argmax(output.logits).item()
-            prediction_text = "Spam" if prediction_num == 1 else "Ham"
+            prediction_text = "spam" if prediction_num == 1 else "ham"
         else:
             # Use traditional model for prediction
             message_bow = vectorizer_traditional.transform([message.message])
