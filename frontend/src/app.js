@@ -66,6 +66,7 @@ function App() {
 
       <div className="input-container">
         <textarea
+          className="message-input"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type something here..."

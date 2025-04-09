@@ -73,12 +73,12 @@ h1 {
     .input-container {
         width: 85%;
     }
-    textarea {
-        width: 85%;
+    .message-input {
+        width: 99%
     }
 }
 
-textarea {
+.message-input {
     width: 99%;
     min-height: 20px;
     max-height: 160px; /* 8 lines max */
@@ -98,7 +98,6 @@ textarea {
     align-items: center;
     background-color: white;
     padding-top: 5px;
-    padding-bottom: 5px;
 }
 
 .model-selection select {
