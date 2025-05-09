@@ -49,7 +49,7 @@ function App() {
 
       const data = await response.json();
       setPrediction(data.prediction);
-      setConfidence(data.Confidence);
+      setConfidence(data.confidence);
     } catch (err) {
       setError("Error: " + err.message);
     } finally {
@@ -113,7 +113,7 @@ function App() {
       {loading && <p>Loading...</p>}
       {prediction && (
         <div className="prediction">
-          {prediction === 1 ? (
+          {prediction == "spam" ? (
             <>
               Prediction: <strong>Harmful 🚨</strong>
             </>
