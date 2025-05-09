@@ -9,6 +9,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [useBert, setUseBert] = useState(true); // State to track model selection
   const [confidence, setConfidence] = useState(null);
+  const [showExamples, setShowExamples] = useState(false);
 
   const handlePredict = async (inputMessage) => {
     const text = inputMessage || message; // Use the provided example or typed input
@@ -131,37 +132,51 @@ function App() {
 
       {error && <p className="error">{error}</p>}
 
-      {/* Example Messages Section */}
-      <div className="example-container">
-        <p className="example-title">Try these:</p>
-        <div className="example-buttons">
+      <div>
+        {!showExamples && (
           <button
-            className="example-button"
-            onClick={() =>
-              handlePredict(
-                "Congratulations on Your Admission to the University of Debrecen!"
-              )
-            }
-          >
-            Congratulations on Your Admission to the University of Debrecen!
-          </button>
-          <button
-            className="example-button"
-            onClick={() =>
-              handlePredict(
-                "You won! As a valued Vodafone customer, our computer has picked you to win $150. To collect, it's easy, just call +09061743386"
-              )
-            }
-          >
-            You won! As a valued Vodafone customer, our computer has picked you
-            to win $150. To collect, it's easy, just call +09061743386
-          </button>
-        </div>
-      </div>
+            className="example-arrow bounce-arrow"
+            onClick={() => setShowExamples(true)}
+            aria-label="Show example messages"
+          />
+        )}
+        {!showExamples && (
+          <p className="example-text">Click the arrow to see examples!</p>
+        )}
 
-      {/* Version Section */}
-      <div className="version-container">
-        <p className="version-label">Newest Model Version: 0.2.2</p>
+        {showExamples && (
+          <div className="example-messages fade-in">
+            {/* Example Messages Section */}
+            <div className="example-container">
+              <p className="example-title">Try these:</p>
+              <div className="example-buttons">
+                <button
+                  className="example-button"
+                  onClick={() =>
+                    handlePredict(
+                      "Congratulations on Your Admission to the University of Debrecen!"
+                    )
+                  }
+                >
+                  Congratulations on Your Admission to the University of
+                  Debrecen!
+                </button>
+                <button
+                  className="example-button"
+                  onClick={() =>
+                    handlePredict(
+                      "You won! As a valued Vodafone customer, our computer has picked you to win $150. To collect, it's easy, just call +09061743386"
+                    )
+                  }
+                >
+                  You won! As a valued Vodafone customer, our computer has
+                  picked you to win $150. To collect, it's easy, just call
+                  +09061743386
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
