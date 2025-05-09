@@ -8,6 +8,7 @@ function App() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [useBert, setUseBert] = useState(true); // State to track model selection
+  const [confidence, setConfidence] = useState(null);
 
   const handlePredict = async (inputMessage) => {
     const text = inputMessage || message; // Use the provided example or typed input
@@ -47,6 +48,7 @@ function App() {
 
       const data = await response.json();
       setPrediction(data.prediction);
+      setConfidence(data.Confidence);
     } catch (err) {
       setError("Error: " + err.message);
     } finally {
@@ -109,22 +111,24 @@ function App() {
 
       {loading && <p>Loading...</p>}
       {prediction && (
-        <p
-          className={`prediction ${
-            prediction === "ham" ? "text-green-600" : "text-red-600"
-          }`}
-        >
-          {prediction === "ham" ? (
-            <>
-              Prediction: <strong>Safe ✅</strong>
-            </>
-          ) : (
+        <div className="prediction">
+          {prediction === 1 ? (
             <>
               Prediction: <strong>Harmful 🚨</strong>
             </>
+          ) : (
+            <>
+              Prediction: <strong>Safe ✅</strong>
+            </>
           )}
-        </p>
+          {confidence !== null && (
+            <div className="confidence">
+              Confidence: <strong>{confidence}%</strong>
+            </div>
+          )}
+        </div>
       )}
+
       {error && <p className="error">{error}</p>}
 
       {/* Example Messages Section */}

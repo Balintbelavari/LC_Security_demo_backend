@@ -141,6 +141,12 @@ button:hover {
     color: white;
 }
 
+.confidence {
+    color: #f34674;
+    font-size: 16px;
+    margin-top: 5px;
+  }
+  
 .error {
     margin-top: 20px;
     color: #f34674;

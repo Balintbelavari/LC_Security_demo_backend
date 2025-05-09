@@ -35,8 +35,10 @@ credentials = service_account.Credentials.from_service_account_info(
     credentials_info,
     scopes=["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 )
-db = client["model_v0_1_1"]
-collection = db["predictions"]
+db_bert = client["BERT_model"]
+db_nb = client["Naive_Bayes_model"]
+collection_bert = db_bert["predictions"]
+collection_nb = db_nb["predictions"]
 
 # Google Sheets API setup
 client_gs = gspread.authorize(credentials)
@@ -94,33 +96,59 @@ async def predict(message: Message):
             )
             with torch.no_grad():
                 output = model_bert(**inputs)
-            prediction_num = torch.argmax(output.logits).item()
+            prediction_num = torch.argmax(output.logits, dim=1)
+            probability_num = torch.softmax(output.logits, dim=1)
             prediction_text = "spam" if prediction_num == 1 else "ham"
+            confidence = round(probability_num[0][prediction_num].item(), 4)
+            # Store prediction in MongoDB and Google Sheets
+            # Check if message already exists in the database
+            existing = await collection_bert.find_one({"message": message.message})
+            if not existing:
+                result = {
+                    "message": message.message,
+                    "prediction": prediction_text,
+                    "confidence": confidence,
+                    "model": "bert",
+                    "timestamp": datetime.now().isoformat()
+                }
+                await collection_bert.insert_one(result)
+                new_row = [message.message, prediction_text, confidence, "bert", datetime.now().isoformat()]
+                sheet.append_row(new_row)
         else:
-            # Use traditional model for prediction
+            # Use naive bayes model for prediction
             message_bow = vectorizer_traditional.transform([message.message])
             prediction_text = model_traditional.predict(message_bow)[0]
-
-        # Store prediction in MongoDB
-        result = {
-            "message": message.message,
+            if hasattr(model_traditional, "predict_proba"):
+                proba = model_traditional.predict_proba(message_bow)[0]
+                # Find the index for the predicted class
+                class_idx = list(model_traditional.classes_).index(prediction_text)
+                confidence = round(proba[class_idx], 4)
+            else:
+                confidence = None  # Or set to 100.0 if not available
+            # Store prediction in MongoDB and Google Sheets
+            # Check if message already exists in the database
+            existing = await collection_nb.find_one({"message": message.message})
+            if not existing:
+                result = {
+                    "message": message.message,
+                    "prediction": prediction_text,
+                    "confidence": confidence,
+                    "model": "naive_bayes",
+                    "timestamp": datetime.now().isoformat()
+                }
+                await collection_nb.insert_one(result)
+                new_row = [message.message, prediction_text, confidence, "naive_bayes", datetime.now().isoformat()]
+                sheet.append_row(new_row)
+        return {
             "prediction": prediction_text,
-            "timestamp": datetime.now().isoformat()
+            "confidence": confidence*100,
         }
-        await db.predictions.insert_one(result)
-
-        # Update Google Sheet
-        new_row = [message.message, prediction_text]
-        sheet.append_row(new_row)
-
-        return {"prediction": prediction_text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
 if frontend_build_path.exists():
     app.mount("/", StaticFiles(directory=frontend_build_path, html=True), name="root_files")
     app.mount("/static", StaticFiles(directory=frontend_build_path / "static"), name="static")
-
 
 # ✅ Properly Close MongoDB on Shutdown
 @app.on_event("shutdown")
