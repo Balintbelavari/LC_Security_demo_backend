@@ -69,6 +69,7 @@ app.add_middleware(
         "https://demo-lcsecurity.lovable.app",  # ✅ No trailing slash
         "chrome-extension://dddfmnkdncldohpigmnogfefkolacplh", 
         "chrome-extension://hklfcppnagidajinbpihfpjnlabpbgnl",  # ✅ Fixed protocol
+        "chrome-extension://efcdjkdffhbehmkegmpmopkglacllggo"
         "chrome-extension://*"
     ],
     allow_credentials=True,
