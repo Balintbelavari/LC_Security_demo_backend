@@ -63,7 +63,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000", 
-        "https://lc-security-backend-d51e9de3f86b.herokuapp.com",  # ✅ No trailing slash
+        "https://lc-security-backend-d51e9de3f86b.herokuapp.com/predict",  # ✅ No trailing slash
         "http://127.0.0.1:8001", 
         "https://demo.lcsecurity.ai",  # ✅ No trailing slash
         "https://demo-lcsecurity.lovable.app",  # ✅ No trailing slash
