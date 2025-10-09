@@ -63,7 +63,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000", 
-        "https://huggingface.co/spaces/Anurag3703/bert-spam-classifier-demo",  # ✅ No trailing slash
+        "https://fuckher.pythonanywhere.com/classify",  # ✅ No trailing slash
         "http://127.0.0.1:8001", 
         "https://demo.lcsecurity.ai",  # ✅ No trailing slash
         "https://demo-lcsecurity.lovable.app",  # ✅ No trailing slash
